@@ -2,17 +2,19 @@ const port = 9001;
 var rooms = new Map();
 var chats = new Map();
 const url = require('url')
+const queryString = require('query-string');
 require('uWebSockets.js').App().ws('/*', {
     compression: 0,
     maxPayloadLength: 16 * 1024 * 1024,
     idleTimeout: 120,
     open: (ws, req) => {
-        var query = url.parse(req.getUrl() + req.getQuery(), {parseQueryString: true}).query
+        var query = queryString.parse(req.getUrl() + req.getQuery(), {parseQueryString: true})
         var room = query.room
         var token = query.token
         var userId = query.userId
         var displayName = query.displayName
         var username = query.username
+        console.log(JSON.stringify({username : username, userId : userId, room : room, token : token, displayName : displayName}))
         if (username == null || username.trim() == '') {
             ws.end(0, JSON.stringify({
                 status: 403
@@ -27,7 +29,6 @@ require('uWebSockets.js').App().ws('/*', {
         ws["room"] = room
         ws["token"] = token
         ws["displayName"] = displayName
-        console.log(JSON.stringify({username : username, userId : userId, room : room, token : token, displayName : displayName}))
         rooms.get(room).set(username, ws)
         var prevChats = []
         if (chats.has(room)) {
