@@ -27,6 +27,7 @@ require('uWebSockets.js').App().ws('/*', {
         ws["room"] = room
         ws["token"] = token
         ws["displayName"] = displayName
+        console.log(JSON.stringify({username : username, userId : userId, room : room, token : token, displayName : displayName}))
         rooms.get(room).set(username, ws)
         var prevChats = []
         if (chats.has(room)) {
@@ -43,6 +44,7 @@ require('uWebSockets.js').App().ws('/*', {
         var message = {
             message : msg, username : ws["username"], displayName : ws["displayName"], userId : ws["userId"]
         }
+        console.log(JSON.stringify(message))
         if (!chats.has(ws["room"]) || chats.get(ws["room"]) == undefined) {
             chats.set(ws["room"], [])
         } else {
