@@ -42,6 +42,7 @@ require('uWebSockets.js').App().ws('/*', {
             msg = String.fromCharCode.apply(null, new Uint8Array(message))
         } catch(ex) {
         }
+        console.log(msg)
         var message = {
             message : msg, username : ws["username"], displayName : ws["displayName"], userId : ws["userId"]
         }
